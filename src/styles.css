@@ -1,0 +1,398 @@
+:root {
+  color-scheme: dark;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #02030b;
+  color: #fff7df;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  --gold: #f8d891;
+  --rose: #f3aac0;
+  --blue: #93d7ff;
+  --ink: #02030b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: #02030b;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(65, 93, 142, 0.22), transparent 34rem),
+    linear-gradient(180deg, #02030b 0%, #070717 48%, #110817 100%);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+.experience {
+  position: relative;
+  min-height: 100vh;
+  background: transparent;
+}
+
+.canvas-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #02030b;
+}
+
+.canvas-layer canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+}
+
+.cinema-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(2, 3, 11, 0.5), transparent 18%, transparent 82%, rgba(2, 3, 11, 0.46)),
+    linear-gradient(180deg, rgba(2, 3, 11, 0.34), transparent 22%, transparent 70%, rgba(2, 3, 11, 0.58));
+  mix-blend-mode: multiply;
+}
+
+.scroll-space {
+  position: relative;
+  z-index: 1;
+  height: 980vh;
+  pointer-events: none;
+}
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  gap: 1.15rem;
+  background:
+    radial-gradient(circle at 50% 52%, rgba(255, 236, 188, 0.1), transparent 17rem),
+    rgba(2, 3, 11, 0.82);
+  transition: opacity 240ms ease;
+}
+
+.intro-mark {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 8rem;
+  line-height: 0.9;
+  letter-spacing: 0;
+  color: #fff3ca;
+  text-shadow:
+    0 0 1.8rem rgba(248, 216, 145, 0.38),
+    0 0 5rem rgba(147, 215, 255, 0.18);
+}
+
+.intro-line {
+  width: min(17rem, 56vw);
+  height: 1px;
+  overflow: hidden;
+  background: rgba(255, 245, 220, 0.18);
+}
+
+.intro-line span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(147, 215, 255, 0), #f8d891, rgba(243, 170, 192, 0.9));
+}
+
+.rachel-title {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transition: opacity 160ms linear;
+}
+
+.rachel-title h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13rem;
+  font-weight: 700;
+  line-height: 0.86;
+  letter-spacing: 0;
+  color: rgba(255, 246, 218, 0.96);
+  text-shadow:
+    0 0 1.6rem rgba(248, 216, 145, 0.44),
+    0 0 5.6rem rgba(147, 215, 255, 0.26),
+    0 0 10rem rgba(243, 170, 192, 0.18);
+}
+
+.narration {
+  position: fixed;
+  inset: auto 0 9vh 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  min-height: 42vh;
+  padding: 0 clamp(1.2rem, 5vw, 4rem);
+  pointer-events: none;
+}
+
+.narration p {
+  grid-area: 1 / 1;
+  width: min(58rem, 92vw);
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 4.6rem;
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-align: center;
+  color: rgba(255, 247, 224, 0.98);
+  text-shadow:
+    0 0 1.3rem rgba(248, 216, 145, 0.3),
+    0 0 4.5rem rgba(147, 215, 255, 0.24);
+  transition:
+    opacity 180ms linear,
+    filter 180ms linear,
+    transform 180ms linear;
+}
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background:
+    radial-gradient(circle at 50% 48%, rgba(248, 216, 145, 0.12), transparent 24rem),
+    rgba(1, 2, 8, 0.86);
+  backdrop-filter: blur(18px);
+}
+
+.photo-lightbox img {
+  display: block;
+  width: min(94vw, 76rem);
+  height: min(84vh, 50rem);
+  object-fit: contain;
+  image-orientation: from-image;
+  border: 1px solid rgba(255, 236, 192, 0.48);
+  border-radius: 7px;
+  background: rgba(2, 3, 11, 0.9);
+  box-shadow:
+    0 0 2.2rem rgba(248, 216, 145, 0.22),
+    0 2rem 7rem rgba(0, 0, 0, 0.68);
+}
+
+.photo-close {
+  position: absolute;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  min-width: 5.4rem;
+  min-height: 2.45rem;
+  padding: 0 1rem;
+  border: 1px solid rgba(255, 240, 205, 0.32);
+  border-radius: 999px;
+  color: #fff5d8;
+  background: rgba(8, 12, 28, 0.62);
+  box-shadow:
+    0 0 1.5rem rgba(147, 215, 255, 0.13),
+    inset 0 0 1.2rem rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+}
+
+.photo-close:focus-visible {
+  outline: 2px solid rgba(248, 216, 145, 0.72);
+  outline-offset: 4px;
+}
+
+.audio-button {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  z-index: 7;
+  min-width: 4.8rem;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border: 1px solid rgba(255, 240, 205, 0.28);
+  border-radius: 999px;
+  color: #fff5d8;
+  background: rgba(8, 12, 28, 0.48);
+  box-shadow:
+    0 0 1.5rem rgba(147, 215, 255, 0.13),
+    inset 0 0 1.2rem rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+}
+
+.audio-button:focus-visible {
+  outline: 2px solid rgba(248, 216, 145, 0.72);
+  outline-offset: 4px;
+}
+
+.cosmic-label {
+  width: max-content;
+  max-width: min(18rem, 68vw);
+  padding: 0.52rem 0.72rem;
+  border: 1px solid rgba(255, 240, 205, 0.22);
+  border-radius: 6px;
+  color: rgba(255, 247, 224, 0.96);
+  background: rgba(4, 7, 20, 0.34);
+  box-shadow: 0 0 2.5rem rgba(147, 215, 255, 0.16);
+  font-size: 0.95rem;
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms linear;
+}
+
+.point-callout {
+  max-width: min(14rem, 72vw);
+  padding: 0.66rem 0.82rem;
+  border: 1px solid rgba(248, 216, 145, 0.42);
+  border-radius: 6px;
+  color: #fff7df;
+  background: rgba(5, 7, 18, 0.58);
+  box-shadow:
+    0 0 1.6rem rgba(248, 216, 145, 0.28),
+    0 0 4rem rgba(147, 215, 255, 0.14);
+  font-size: 1.08rem;
+  line-height: 1.25;
+  text-align: center;
+  backdrop-filter: blur(18px);
+  animation: calloutIn 420ms ease both;
+}
+
+@keyframes calloutIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.8rem, 0) scale(0.94);
+    filter: blur(0.35rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.fallback {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(248, 216, 145, 0.2), transparent 18rem),
+    linear-gradient(180deg, #02030b, #0b0b18 58%, #150d18);
+}
+
+.fallback div {
+  text-align: center;
+}
+
+.fallback p,
+.fallback h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
+}
+
+.fallback p {
+  color: var(--gold);
+  font-size: 7rem;
+}
+
+.fallback h1 {
+  margin-top: 1rem;
+  color: #fff7df;
+  font-size: 4rem;
+}
+
+@media (max-width: 1080px) {
+  .intro-mark {
+    font-size: 6rem;
+  }
+
+  .rachel-title h1 {
+    font-size: 9rem;
+  }
+
+  .narration p {
+    font-size: 3.35rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .scroll-space {
+    height: 1120vh;
+  }
+
+  .narration {
+    inset: auto 0 7vh 0;
+    min-height: 50vh;
+  }
+
+  .intro-mark {
+    font-size: 4rem;
+  }
+
+  .rachel-title h1 {
+    font-size: 5.2rem;
+  }
+
+  .narration p {
+    font-size: 2.1rem;
+  }
+
+  .cosmic-label {
+    max-width: 14rem;
+    font-size: 0.82rem;
+  }
+
+  .audio-button {
+    min-width: 4.2rem;
+    min-height: 2.35rem;
+    padding: 0 0.86rem;
+  }
+
+  .point-callout {
+    font-size: 0.96rem;
+  }
+
+  .fallback p {
+    font-size: 4rem;
+  }
+
+  .fallback h1 {
+    font-size: 2.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .narration p,
+  .intro-overlay,
+  .cosmic-label {
+    transition: none;
+  }
+}
