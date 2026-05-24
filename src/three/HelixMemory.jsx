@@ -13,12 +13,11 @@ const HELIX_FADE_END = 0.995;
 
 function memoryFramePointAt(t, index, mobile, radius = 5.15, height = 15.5) {
   const y = lerp(-height / 2, height / 2, t);
-  const lane = index % 4;
-  const side = lane === 0 || lane === 3 ? -1 : 1;
-  const inner = lane === 1 || lane === 3;
-  const x = side * (mobile ? (inner ? 1.9 : 2.85) : (inner ? 3.8 : radius));
-  const z = (mobile ? 3.15 : 3.25) + (inner ? 0.6 : 0) + Math.sin(index * 1.7) * 0.35;
-  return new THREE.Vector3(x, y, z);
+  const side = index % 2 === 0 ? -1 : 1;
+  const rowOffset = ((index % 3) - 1) * (mobile ? 0.18 : 0.34);
+  const x = side * (mobile ? 2.35 : radius);
+  const z = (mobile ? 3.25 : 3.35) + Math.sin(index * 1.7) * 0.22;
+  return new THREE.Vector3(x, y + rowOffset, z);
 }
 
 export function HelixLines({ scrollRef }) {
@@ -74,7 +73,7 @@ function PhotoCard({ source, index, total, scrollRef, onOpenPhoto }) {
 
   const mobile = typeof window !== 'undefined' && window.innerWidth < 720;
   const basePhoto = useMemo(() => memoryFramePointAt(t, index, mobile, 5.05 + (index % 3) * 0.22, 15.5), [index, mobile, t]);
-  const planeHeight = mobile ? 1.16 : 1.72;
+  const planeHeight = mobile ? 1.02 : 1.46;
   const planeWidth = clamp(aspect, 0.7, 1.58) * planeHeight;
 
   const canOpenPhoto = useCallback(
@@ -125,8 +124,8 @@ function PhotoCard({ source, index, total, scrollRef, onOpenPhoto }) {
     const route = clamp((scroll - PHOTO_ROUTE_START) / (PHOTO_ROUTE_END - PHOTO_ROUTE_START));
     const visibleRoute = lerp(0.78, 0.08, route);
     const distance = Math.abs(t - visibleRoute);
-    const near = Math.pow(1 - clamp(distance / 0.052), 2);
-    const focus = Math.pow(1 - clamp(distance / 0.026), 2);
+    const near = Math.pow(1 - clamp(distance / 0.034), 2);
+    const focus = Math.pow(1 - clamp(distance / 0.018), 2);
     const opacity = stage * near;
     interactiveRef.current = stage > 0.75 && opacity > 0.07;
     anchor.copy(baseAnchor);
