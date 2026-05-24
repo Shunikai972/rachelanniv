@@ -4,10 +4,21 @@ import * as THREE from 'three';
 import { imageSources } from '../utils/imageSources.js';
 import { clamp, createHelixLineSegments, helixPointAt, lerp, smoothstep } from './generators.js';
 
-function memoryFramePointAt(t, radius = 5.15, height = 15.5) {
+const HELIX_FORM_START = 0.66;
+const HELIX_READY = 0.77;
+const PHOTO_ROUTE_START = 0.79;
+const PHOTO_ROUTE_END = 0.965;
+const HELIX_FADE_START = 0.965;
+const HELIX_FADE_END = 0.995;
+
+function memoryFramePointAt(t, index, mobile, radius = 5.15, height = 15.5) {
   const y = lerp(-height / 2, height / 2, t);
-  const angle = y * 1.6 + Math.PI;
-  return new THREE.Vector3(Math.cos(angle) * radius, y, Math.sin(angle) * radius);
+  const lane = index % 4;
+  const side = lane === 0 || lane === 3 ? -1 : 1;
+  const inner = lane === 1 || lane === 3;
+  const x = side * (mobile ? (inner ? 1.9 : 2.85) : (inner ? 3.8 : radius));
+  const z = (mobile ? 3.15 : 3.25) + (inner ? 0.6 : 0) + Math.sin(index * 1.7) * 0.35;
+  return new THREE.Vector3(x, y, z);
 }
 
 export function HelixLines({ scrollRef }) {
@@ -22,7 +33,7 @@ export function HelixLines({ scrollRef }) {
   useFrame(() => {
     if (!ref.current) return;
     const scroll = scrollRef.current;
-    const visible = smoothstep(0.67, 0.76, scroll) * (1 - smoothstep(0.88, 0.96, scroll));
+    const visible = smoothstep(HELIX_FORM_START, HELIX_READY, scroll) * (1 - smoothstep(HELIX_FADE_START, HELIX_FADE_END, scroll));
     ref.current.visible = visible > 0.01;
     ref.current.material.opacity = visible * 0.34;
     ref.current.rotation.y = 0;
@@ -58,16 +69,16 @@ function PhotoCard({ source, index, total, scrollRef, onOpenPhoto }) {
   const phase = index % 2 === 0 ? 0 : Math.PI;
   const t = total <= 1 ? 0.5 : index / (total - 1);
   const baseAnchor = useMemo(() => helixPointAt(t, 2.15, 15.5, phase), [phase, t]);
-  const basePhoto = useMemo(() => memoryFramePointAt(t, 5.05 + (index % 3) * 0.22, 15.5), [index, t]);
   const anchor = useMemo(() => new THREE.Vector3(), []);
   const photo = useMemo(() => new THREE.Vector3(), []);
 
   const mobile = typeof window !== 'undefined' && window.innerWidth < 720;
-  const planeHeight = mobile ? 1.55 : 2.05;
-  const planeWidth = clamp(aspect, 0.7, 1.65) * planeHeight;
+  const basePhoto = useMemo(() => memoryFramePointAt(t, index, mobile, 5.05 + (index % 3) * 0.22, 15.5), [index, mobile, t]);
+  const planeHeight = mobile ? 1.16 : 1.72;
+  const planeWidth = clamp(aspect, 0.7, 1.58) * planeHeight;
 
   const canOpenPhoto = useCallback(
-    () => interactiveRef.current && scrollRef.current >= 0.66 && scrollRef.current <= 0.9,
+    () => interactiveRef.current && scrollRef.current >= PHOTO_ROUTE_START && scrollRef.current <= PHOTO_ROUTE_END,
     [scrollRef],
   );
 
@@ -110,13 +121,13 @@ function PhotoCard({ source, index, total, scrollRef, onOpenPhoto }) {
 
   useFrame(() => {
     const scroll = scrollRef.current;
-    const stage = smoothstep(0.66, 0.74, scroll) * (1 - smoothstep(0.89, 0.96, scroll));
-    const route = clamp((scroll - 0.69) / 0.2);
+    const stage = smoothstep(HELIX_READY, PHOTO_ROUTE_START, scroll) * (1 - smoothstep(HELIX_FADE_START, HELIX_FADE_END, scroll));
+    const route = clamp((scroll - PHOTO_ROUTE_START) / (PHOTO_ROUTE_END - PHOTO_ROUTE_START));
     const distance = Math.abs((1 - t) - route);
-    const near = Math.pow(1 - clamp(distance / 0.095), 2);
-    const focus = 1 - clamp(distance / 0.045);
+    const near = Math.pow(1 - clamp(distance / 0.052), 2);
+    const focus = Math.pow(1 - clamp(distance / 0.026), 2);
     const opacity = stage * near;
-    interactiveRef.current = opacity > 0.12;
+    interactiveRef.current = stage > 0.75 && opacity > 0.07;
     anchor.copy(baseAnchor);
     photo.copy(basePhoto);
 
@@ -187,7 +198,7 @@ function PhotoCard({ source, index, total, scrollRef, onOpenPhoto }) {
             document.body.style.cursor = '';
           }}
         >
-          <planeGeometry args={[planeWidth + 0.2, planeHeight + 0.2]} />
+          <planeGeometry args={[planeWidth + 0.46, planeHeight + 0.46]} />
           <meshBasicMaterial transparent opacity={0} depthWrite={false} depthTest={false} />
         </mesh>
 

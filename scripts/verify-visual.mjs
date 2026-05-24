@@ -152,7 +152,7 @@ async function verifyViewport(browser, name, viewport) {
   assertCanvas(`${name} waves`, waveStats);
   await page.screenshot({ path: path.join(artifactsDir, `${name}-waves.png`), fullPage: false });
 
-  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight * 0.77));
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight * 0.84));
   await page.waitForTimeout(3600);
   const helixStats = await canvasStats(page);
   assertCanvas(`${name} helix`, helixStats);
@@ -160,11 +160,13 @@ async function verifyViewport(browser, name, viewport) {
   await page.screenshot({ path: path.join(artifactsDir, `${name}-helix.png`), fullPage: false });
 
   const photoClickTargets = [
-    [0.5, 0.63],
-    [0.5, 0.58],
-    [0.45, 0.63],
-    [0.55, 0.63],
-    [0.5, 0.52],
+    [0.08, 0.52],
+    [0.92, 0.52],
+    [0.14, 0.58],
+    [0.83, 0.57],
+    [0.31, 0.5],
+    [0.69, 0.5],
+    [0.5, 0.56],
   ];
   let lightboxOpened = false;
   for (const [x, y] of photoClickTargets) {

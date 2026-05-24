@@ -231,7 +231,7 @@ export default function ParticleUniverse({
     const waveEnergy = clamp(Math.abs(velocityRef.current) / 4200, 0, 1);
     const wavePhase = time * (0.55 + waveEnergy * 1.4) + scroll * 24;
     const hyper = smoothstep(0.37, 0.46, scroll) * (1 - smoothstep(0.51, 0.57, scroll));
-    const finalGlow = smoothstep(0.88, 0.98, scroll);
+    const finalGlow = smoothstep(0.965, 0.995, scroll);
     const introAlpha = smoothstep(0.5, 0.96, intro);
     const follow = clamp(1 - Math.pow(0.0045, delta), 0.04, 0.22);
     const selectedIndex = selected?.index ?? -1;
@@ -307,17 +307,17 @@ export default function ParticleUniverse({
         tx = wx;
         ty = wy;
         tz = wz;
-      } else if (scroll < 0.74) {
-        const t = easeInOutCubic((scroll - 0.64) / 0.1);
+      } else if (scroll < 0.77) {
+        const t = easeInOutCubic((scroll - 0.64) / 0.13);
         tx = wx + (hx - wx) * t;
         ty = wy + (hy - wy) * t;
         tz = wz + (hz - wz) * t;
-      } else if (scroll < 0.88) {
+      } else if (scroll < 0.965) {
         tx = hx;
         ty = hy;
         tz = hz;
       } else {
-        const t = easeInOutCubic((scroll - 0.88) / 0.12);
+        const t = easeInOutCubic((scroll - 0.965) / 0.035);
         tx = hx + (txText - hx) * t;
         ty = hy + (tyText - hy) * t;
         tz = hz + (tzText - hz) * t;
@@ -375,7 +375,7 @@ export default function ParticleUniverse({
 
       const sphereAmount = smoothstep(0.12, 0.24, scroll) * (1 - smoothstep(0.39, 0.5, scroll));
       const waveAmount = smoothstep(0.43, 0.56, scroll) * (1 - smoothstep(0.65, 0.73, scroll));
-      const helixAmount = smoothstep(0.66, 0.76, scroll) * (1 - smoothstep(0.88, 0.96, scroll));
+      const helixAmount = smoothstep(0.66, 0.77, scroll) * (1 - smoothstep(0.965, 0.995, scroll));
       const galaxyAmount = (1 - sphereAmount) * (1 - waveAmount) * (1 - helixAmount) * (1 - finalGlow);
 
       const galaxyRadius = Math.sqrt(gx * gx + gy * gy + gz * gz);

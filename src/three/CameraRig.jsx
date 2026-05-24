@@ -60,8 +60,8 @@ export default function CameraRig({ scrollRef, introRef, selected }) {
       desired.set(Math.sin(time * 0.15) * 0.55, mobile ? 4.8 : 4.15, lerp(mobile ? 9.8 : 8.4, 7.1, t));
       lookAt.set(0, 0.05, lerp(-0.7, -1.8, t));
       targetFov = mobile ? 63 : 55;
-    } else if (scroll < 0.9) {
-      const t = clamp((scroll - 0.66) / 0.24);
+    } else if (scroll < 0.965) {
+      const t = clamp((scroll - 0.66) / 0.305);
       const cameraY = lerp(8.2, -7.2, t);
       const lookY = lerp(4.4, -6.4, t);
       const side = lerp(mobile ? 4.4 : 6.4, mobile ? -4.2 : -6.4, t);
@@ -71,7 +71,7 @@ export default function CameraRig({ scrollRef, introRef, selected }) {
       lookAt.set(0, lookY, 0);
       targetFov = mobile ? 62 : 55;
     } else {
-      const t = smoothstep(0.9, 1, scroll);
+      const t = smoothstep(0.965, 1, scroll);
       desired.set(Math.sin(time * 0.08) * 0.25, Math.sin(time * 0.1) * 0.16, lerp(mobile ? 33 : 11.8, mobile ? 31 : 10.9, t));
       lookAt.set(0, 0, 0);
       targetFov = mobile ? 63 : 55;
