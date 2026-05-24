@@ -61,7 +61,7 @@ export default function CameraRig({ scrollRef, introRef, selected }) {
       lookAt.set(0, 0.05, lerp(-0.7, -1.8, t));
       targetFov = mobile ? 63 : 55;
     } else if (scroll < 0.965) {
-      const t = clamp((scroll - 0.66) / 0.305);
+      const t = clamp((scroll - 0.77) / 0.195);
       const cameraY = lerp(8.2, -7.2, t);
       const lookY = lerp(4.4, -6.4, t);
       const side = lerp(mobile ? 4.4 : 6.4, mobile ? -4.2 : -6.4, t);

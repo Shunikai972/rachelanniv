@@ -123,7 +123,8 @@ function PhotoCard({ source, index, total, scrollRef, onOpenPhoto }) {
     const scroll = scrollRef.current;
     const stage = smoothstep(HELIX_READY, PHOTO_ROUTE_START, scroll) * (1 - smoothstep(HELIX_FADE_START, HELIX_FADE_END, scroll));
     const route = clamp((scroll - PHOTO_ROUTE_START) / (PHOTO_ROUTE_END - PHOTO_ROUTE_START));
-    const distance = Math.abs((1 - t) - route);
+    const visibleRoute = lerp(0.78, 0.08, route);
+    const distance = Math.abs(t - visibleRoute);
     const near = Math.pow(1 - clamp(distance / 0.052), 2);
     const focus = Math.pow(1 - clamp(distance / 0.026), 2);
     const opacity = stage * near;
